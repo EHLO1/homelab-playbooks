@@ -1,0 +1,24 @@
+---
+# Ubuntu/Debian package updates.
+
+- name: Update apt cache and upgrade all packages
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: dist
+
+- name: Remove unused packages
+  ansible.builtin.apt:
+    autoremove: true
+
+- name: Check whether a reboot is required
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: baseline_reboot_file
+
+- name: Reboot if the kernel or core libraries require it
+  ansible.builtin.reboot:
+    msg: Rebooting via Ansible to finish applying updates
+  when:
+    - baseline_reboot_if_required
+    - baseline_reboot_file.stat.exists

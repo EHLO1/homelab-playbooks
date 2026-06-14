@@ -1,0 +1,50 @@
+---
+# Follows the official install steps from docs.docker.com for Debian/Ubuntu:
+# set up Docker's apt repo, install the engine and plugins.
+
+- name: Install repository prerequisites
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: true
+
+- name: Create the apt keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Add Docker's official GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+  # get_url is idempotent on content; the key is fetched only if it changes.
+
+- name: Add the Docker apt repository
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: https://download.docker.com/linux/ubuntu
+    suites: ["{{ docker_apt_suite }}"]
+    components: [stable]
+    architectures: ["{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"]
+    signed_by: /etc/apt/keyrings/docker.asc
+    enabled: true
+    state: present
+  # deb822_repository (ansible.builtin, core 2.15+) writes .sources
+  # file to /etc/apt/sources.list.d/
+
+- name: Install Docker Engine, CLI, containerd and plugins
+  ansible.builtin.apt:
+    name: "{{ docker_packages }}"
+    state: present
+    update_cache: true
+
+- name: Ensure the docker service is started and enabled on boot
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+    enabled: true
