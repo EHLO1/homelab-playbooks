@@ -54,7 +54,7 @@ source "proxmox-iso" "ubuntu-2604-docker" {
   boot_wait = "5s"
 
   ssh_username         = "ansible"
-  ssh_private_key      = var.ansible_ssh_private_key_string
+  ssh_private_key      = "~/.ssh/id_ansible"
   ssh_timeout          = "20m"
 }
 

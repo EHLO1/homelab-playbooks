@@ -38,8 +38,3 @@ variable "personal_ssh_key" {
 variable "ansible_ssh_key" {
   type = string
 }
-
-variable "ansible_ssh_private_key_string" {
-  type    = string
-  sensitive = true
-}
