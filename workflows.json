@@ -1,16 +1,14 @@
-{
-    "ansible": [
-        {
+[
+    {
+        "ansible": {
             "playbooks": [
                 "update.yml"
             ]
-        }
-    ],
-    "packer": [
-        {
+        },
+        "packer": {
             "templates": [
                 "ubuntu-2604-docker"
             ]
         }
-    ]
-}
+    }
+]
