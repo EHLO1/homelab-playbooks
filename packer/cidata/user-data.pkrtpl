@@ -1,0 +1,38 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+  
+  # Installs SSH and applies the personal SSH key to the default UID 1000 user
+  ssh:
+    install-server: true
+    allow-pw: false
+    authorized-keys:
+      - "${personal_ssh_key}"
+  
+  # The identity block always sets this user to UID 1000
+  identity:
+    hostname: linux-template
+    username: "${ssh_username}"
+    password: "${user_password_hash}"
+  
+  # Install the QEMU agent so Packer/Proxmox can communicate
+  packages:
+    - qemu-guest-agent
+    - curl
+    - sudo
+
+  # Nested cloud-init configuration for the Ansible system user
+  user-data:
+    users:
+      - default # Ensures the identity user above is still created
+      - name: ansible
+        gecos: Ansible Service Account
+        system: true # Creates as a system user (UID < 1000)
+        groups: [sudo]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - "${ansible_ssh_key}"

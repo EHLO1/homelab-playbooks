@@ -1,6 +1,27 @@
-variable "ssh_username" {
+variable "proxmox_api_url" {
+  type      = string
+  sensitive = true
+}
+
+variable "proxmox_api_token_id" {
+  type      = string
+  sensitive = true
+}
+
+variable "proxmox_api_token_secret" {
+  type      = string
+  sensitive = true
+}
+
+variable "node" {
+  type = string
+  default = "lnet-serv1"
+}
+
+
+variable "username" {
   type    = string
-  default = "yourusername"
+  sensitive = true
 }
 
 variable "user_password_hash" {
@@ -16,4 +37,9 @@ variable "personal_ssh_key" {
 
 variable "ansible_ssh_key" {
   type = string
+}
+
+variable "ansible_ssh_private_key_string" {
+  type    = string
+  sensitive = true
 }
