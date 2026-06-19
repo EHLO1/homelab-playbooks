@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.2.3"
+      source  = "github.com/hashicorp/proxmox"
+    }
+  }
+}
+
 variable "proxmox_api_url" {
   type      = string
   sensitive = true

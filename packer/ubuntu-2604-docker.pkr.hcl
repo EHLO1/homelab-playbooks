@@ -6,7 +6,7 @@ source "proxmox-iso" "ubuntu-2604-docker" {
 
   node                 = var.node
   vm_id                = 8100
-  name                 = "ubuntu-2604-docker"
+  vm_name              = "ubuntu-2604-docker"
   template_description = "Ubuntu 26.04 Docker Host Template - Built via Packer"
 
   iso_file        = "local:iso/ubuntu-26.04-live-server-amd64.iso"
