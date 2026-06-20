@@ -32,17 +32,21 @@ source "proxmox-iso" "ubuntu-2604-docker" {
     type         = "virtio"
   }
 
-  cd_content = {
-    "user-data" = templatefile("./cidata/user-data.pkrtpl", {
-      username           = var.username
-      user_password_hash = var.user_password_hash
-      personal_ssh_key   = var.personal_ssh_key
-      ansible_ssh_key    = var.ansible_ssh_key
-    })
-    "meta-data" = "instance-id: linux-template\nlocal-hostname: linux-template\n"
+  additional_iso_files {
+    cd_label         = "cidata"
+    iso_storage_pool = "local"
+    unmount          = true
+    
+    cd_content = {
+      "user-data" = templatefile("./cidata/user-data.pkrtpl", {
+        username           = var.username
+        user_password_hash = var.user_password_hash
+        personal_ssh_key   = var.personal_ssh_key
+        ansible_ssh_key    = var.ansible_ssh_key
+      })
+      "meta-data" = "instance-id: linux-template\nlocal-hostname: linux-template\n"
+    }
   }
-  cd_label         = "cidata"
-  iso_storage_pool = "local"
 
   boot_command = [
     "<esc><wait>",
