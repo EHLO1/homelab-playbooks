@@ -21,7 +21,7 @@ source "proxmox-iso" "ubuntu-2604-docker" {
   boot_iso {
     type          = "scsi"
     iso_file      = "local:iso/ubuntu-26.04-live-server-amd64.iso"
-    unmount_iso   = true
+    unmount       = true
   }
 
   network_adapters {
