@@ -9,8 +9,6 @@ source "proxmox-iso" "ubuntu-2604-docker" {
   vm_name              = "ubuntu-2604-docker"
   template_description = "Ubuntu 26.04 Docker Host Template - Built via Packer"
 
-  iso_file        = "local:iso/ubuntu-26.04-live-server-amd64.iso"
-  unmount_iso     = true
   os              = "l26"
   scsi_controller = "virtio-scsi-pci"
 
@@ -19,6 +17,12 @@ source "proxmox-iso" "ubuntu-2604-docker" {
   memory  = 1024
 
   qemu_agent = true
+
+  boot_iso {
+    type          = "scsi"
+    iso_file      = "local:iso/ubuntu-26.04-live-server-amd64.iso"
+    unmount_iso   = true
+  }
 
   network_adapters {
     model  = "virtio"
