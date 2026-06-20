@@ -18,6 +18,15 @@ source "proxmox-iso" "ubuntu-2604-docker" {
 
   qemu_agent = true
 
+  bios    = "ovmf"
+  machine = "q35"
+
+  efi_config {
+    efi_storage_pool  = "vm1-storage"
+    efi_type          = "4m"
+    pre_enrolled_keys = true
+  }
+
   boot_iso {
     type          = "scsi"
     iso_file      = "local:iso/ubuntu-26.04-live-server-amd64.iso"
@@ -33,7 +42,8 @@ source "proxmox-iso" "ubuntu-2604-docker" {
     disk_size    = "20G"
     format       = "raw"
     storage_pool = "vm1-storage"
-    type         = "virtio"
+    type         = "scsi"
+    discard      = true
   }
 
   additional_iso_files {
@@ -52,14 +62,17 @@ source "proxmox-iso" "ubuntu-2604-docker" {
     }
   }
 
+  # 
+  boot = "order=scsi1;scsi0"
+
   boot_command = [
     "<esc><wait>",
     "e<wait>",
     "<down><down><down><end>",
-    " autoinstall ds=nocloud;s=/cdrom/",
+    " autoinstall ds=nocloud",
     "<f10>"
   ]
-  boot_wait = "5s"
+  boot_wait = "10s"
 
   ssh_username         = "ansible"
   ssh_private_key_file = "~/.ssh/id_ansible"
