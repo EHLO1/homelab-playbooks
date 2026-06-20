@@ -11,7 +11,7 @@ source "proxmox-iso" "ubuntu-2604-docker" {
 
   iso_file        = "local:iso/ubuntu-26.04-live-server-amd64.iso"
   unmount_iso     = true
-  qemu_os         = "l26"
+  os              = "l26"
   scsi_controller = "virtio-scsi-pci"
 
   cores   = 1
@@ -58,7 +58,7 @@ source "proxmox-iso" "ubuntu-2604-docker" {
   boot_wait = "5s"
 
   ssh_username         = "ansible"
-  ssh_private_key      = "~/.ssh/id_ansible"
+  ssh_private_key_file = "~/.ssh/id_ansible"
   ssh_timeout          = "20m"
 }
 

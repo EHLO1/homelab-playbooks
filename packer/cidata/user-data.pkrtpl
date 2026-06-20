@@ -15,7 +15,7 @@ autoinstall:
   # The identity block always sets this user to UID 1000
   identity:
     hostname: linux-template
-    username: "${ssh_username}"
+    username: "${username}"
     password: "${user_password_hash}"
   
   # Install the QEMU agent so Packer/Proxmox can communicate
